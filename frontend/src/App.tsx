@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import api from './api/client';
+import api, { setActiveSite } from './api/client';
 import {
   User,
   Product,
@@ -178,6 +178,14 @@ export const App: React.FC = () => {
     setCurrentTab(item.targetTab);
   };
 
+  useEffect(() => {
+    const handleSiteChanged = () => {
+      fetchAllData();
+    };
+    window.addEventListener('wms:site-changed', handleSiteChanged);
+    return () => window.removeEventListener('wms:site-changed', handleSiteChanged);
+  }, [currentUser]);
+
   // Auth actions
   const handleLogin = async (username: string, pass: string) => {
     const res = await api.post('/auth/login', { username, password: pass });
@@ -188,11 +196,13 @@ export const App: React.FC = () => {
     // Phân định Site tự động theo tài khoản:
     const un = (user.username || '').toLowerCase();
     if (un.includes('hn')) {
-      localStorage.setItem('wms_active_site_id', 'SITE_HN');
+      setActiveSite('SITE_HN');
     } else if (un.includes('hcm')) {
-      localStorage.setItem('wms_active_site_id', 'SITE_HCM');
+      setActiveSite('SITE_HCM');
     } else if (user.role === 'ADMIN') {
-      localStorage.setItem('wms_active_site_id', 'SITE_CENTRAL');
+      if (!localStorage.getItem('wms_active_site_id')) {
+        setActiveSite('SITE_CENTRAL');
+      }
     }
 
     showToast(`Đăng nhập thành công! Hệ thống tự động gán vào: ${user.hoTen}`);

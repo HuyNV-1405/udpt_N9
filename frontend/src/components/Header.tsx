@@ -46,8 +46,21 @@ export const Header: React.FC<HeaderProps> = ({
       }
     };
 
+    const handleSiteChange = (e: any) => {
+      const siteId = e.detail;
+      const found = SITES.find((s) => s.id === siteId);
+      if (found) {
+        setActiveSiteState(found);
+        setServingLb(`Nginx LB :${found.lbPort}`);
+      }
+    };
+
     window.addEventListener('wms:node-info', handleNodeInfo);
-    return () => window.removeEventListener('wms:node-info', handleNodeInfo);
+    window.addEventListener('wms:site-changed', handleSiteChange);
+    return () => {
+      window.removeEventListener('wms:node-info', handleNodeInfo);
+      window.removeEventListener('wms:site-changed', handleSiteChange);
+    };
   }, []);
 
   const handleSiteSelect = (siteId: string) => {
@@ -55,7 +68,6 @@ export const Header: React.FC<HeaderProps> = ({
     const newSite = SITES.find((s) => s.id === siteId) || SITES[0];
     setActiveSiteState(newSite);
     setServingLb(`Nginx LB :${newSite.lbPort}`);
-    window.location.reload();
   };
 
   const getRoleBadge = (role?: string) => {

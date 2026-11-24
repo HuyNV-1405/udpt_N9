@@ -99,6 +99,8 @@ export const isSiteLocked = (currentUser?: any): { locked: boolean; reason?: str
 
 export const setActiveSite = (siteId: string) => {
   localStorage.setItem('wms_active_site_id', siteId);
+  const found = SITES.find((s) => s.id === siteId) || SITES[0];
+  api.defaults.baseURL = found.url;
   window.dispatchEvent(new CustomEvent('wms:site-changed', { detail: siteId }));
 };
 
