@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:central": "vite --port 3000",
+    "dev:hn": "vite --port 3001",
+    "dev:hcm": "vite --port 3002",
     "build": "tsc && vite build",
     "preview": "vite preview"
   },

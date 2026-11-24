@@ -7,6 +7,8 @@ import transferRoutes from './transfer.routes';
 import inventoryRoutes from './inventory.routes';
 import locationRoutes from './location.routes';
 import notificationRoutes from './notification.routes';
+import systemRoutes from './system.routes';
+import syncRoutes from './sync.routes';
 
 const router = Router();
 
@@ -18,6 +20,8 @@ router.use('/transfers', transferRoutes);
 router.use('/inventory', inventoryRoutes);
 router.use('/locations', locationRoutes);
 router.use('/notifications', notificationRoutes);
+router.use('/system', systemRoutes);
+router.use('/sync', syncRoutes);
 
 export default router;
 

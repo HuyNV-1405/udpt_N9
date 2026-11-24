@@ -182,8 +182,21 @@ export const App: React.FC = () => {
   const handleLogin = async (username: string, pass: string) => {
     const res = await api.post('/auth/login', { username, password: pass });
     localStorage.setItem('wms_token', res.data.data.token);
-    setCurrentUser(res.data.data.user);
-    showToast(`Đăng nhập thành công với vai trò: ${res.data.data.user.role}`);
+    const user = res.data.data.user;
+    setCurrentUser(user);
+
+    // Phân định Site tự động theo tài khoản:
+    const un = (user.username || '').toLowerCase();
+    if (un.includes('hn')) {
+      localStorage.setItem('wms_active_site_id', 'SITE_HN');
+    } else if (un.includes('hcm')) {
+      localStorage.setItem('wms_active_site_id', 'SITE_HCM');
+    } else if (user.role === 'ADMIN') {
+      localStorage.setItem('wms_active_site_id', 'SITE_CENTRAL');
+    }
+
+    showToast(`Đăng nhập thành công! Hệ thống tự động gán vào: ${user.hoTen}`);
+    fetchAllData();
   };
 
   const handleRegister = async (registerData: any) => {

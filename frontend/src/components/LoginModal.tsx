@@ -58,11 +58,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({
   if (!isOpen) return null;
 
   const demoAccounts = [
-    { label: 'Admin Hệ Thống', user: 'admin', pass: 'Admin@123', role: 'Toàn quyền cấu hình & duyệt' },
-    { label: 'Quản Lý Kho', user: 'quanlykho', pass: 'Quanly@123', role: 'Phê duyệt nhập / xuất / chuyển' },
+    { label: '🏢 Admin Trụ Sở Chính (Xem toàn quốc)', user: 'admin', pass: 'Admin@123', role: 'Toàn quyền cấu hình, xem mọi Site' },
+    { label: '🏛️ Thủ Kho Miền Bắc (Khóa Node HN)', user: 'kho_hn', pass: 'Khohn@123', role: 'Quản lý kho Hà Nội (LB :8001)' },
+    { label: '🏬 Thủ Kho Miền Nam (Khóa Node HCM)', user: 'kho_hcm', pass: 'Khohcm@123', role: 'Quản lý kho TP.HCM (LB :8002)' },
     { label: 'Nhân Viên Kho', user: 'nhanvienkho', pass: 'Nhanvien@123', role: 'Thực hiện kiểm đếm, cất hàng' },
-    { label: 'Nhân Viên Mua Hàng', user: 'muahang', pass: 'Muahang@123', role: 'Tạo phiếu nhập từ NCC' },
-    { label: 'Nhân Viên Kinh Doanh', user: 'banhang', pass: 'Banhang@123', role: 'Tạo phiếu xuất cho khách' },
   ];
 
   const handleLoginSubmit = async (e: React.FormEvent) => {

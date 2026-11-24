@@ -11,6 +11,7 @@ export interface User {
   email?: string;
   sdt?: string;
   role: Role;
+  assignedSite?: 'SITE_CENTRAL' | 'SITE_HN' | 'SITE_HCM';
   trangThai?: 'ACTIVE' | 'INACTIVE';
   ngayTao?: string;
 }

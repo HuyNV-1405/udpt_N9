@@ -12,20 +12,32 @@ export const createApp = (): Application => {
   // Middlewares
   app.use(
     cors({
-      origin: process.env.CLIENT_URL || 'http://localhost:5173',
+      origin: true,
       credentials: true,
+      exposedHeaders: ['X-Node-Name', 'X-Site-Id', 'X-Site-Name', 'X-Load-Balancer'],
     })
   );
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
+  // Middleware gắn định danh Node và Site vào header phản hồi
+  app.use((req: Request, res: Response, next) => {
+    res.setHeader('X-Node-Name', process.env.NODE_ID || 'node-default');
+    res.setHeader('X-Site-Id', process.env.SITE_ID || 'SITE_CENTRAL');
+    res.setHeader('X-Site-Name', encodeURIComponent(process.env.SITE_NAME || 'Trụ sở chính'));
+    next();
+  });
+
   // Healthcheck endpoint
   app.get('/api/health', (req: Request, res: Response) => {
     res.json({
       status: 'OK',
+      siteId: process.env.SITE_ID || 'SITE_CENTRAL',
+      siteName: process.env.SITE_NAME || 'Trụ sở chính - Báo cáo tổng hợp',
+      nodeId: process.env.NODE_ID || 'central_app_1',
       timestamp: new Date().toISOString(),
-      service: 'Warehouse Management System (WMS) API',
-      version: '1.0.0',
+      service: 'Warehouse Management System (WMS) Distributed Node',
+      version: '2.0.0-distributed',
     });
   });
 
